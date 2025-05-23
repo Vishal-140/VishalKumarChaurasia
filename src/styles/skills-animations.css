@@ -1,0 +1,29 @@
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(20px);
+  }
+  75% {
+    transform: translateY(10px) translateX(5px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+.glow-purple-dark {
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+}
+
+.glow-purple-light {
+  filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.3));
+}
+
+.shadow-glow {
+  box-shadow: 0 0 15px 5px rgba(168, 85, 247, 0.4);
+}
