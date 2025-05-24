@@ -106,12 +106,12 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
   useEffect(() => {
     // Initialize audio
     if (typeof window !== 'undefined') {
-      audioRef.current = new Audio('/src/assets/audio/backgroundmusic.mp3');
+      audioRef.current = new Audio('/assets/audio/backgroundmusic.mp3');
       audioRef.current.loop = true;
       audioRef.current.volume = 0.3;
       
       // Initialize bubble sound
-      bubbleSoundRef.current = new Audio('/src/assets/audio/bubblepopup.mp3');
+      bubbleSoundRef.current = new Audio('/assets/audio/bubblepopup.mp3');
       bubbleSoundRef.current.volume = 0.5;
     }
   }, []);
@@ -156,7 +156,7 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
   const handleDownloadCV = () => {
     // Create a link to download the CV file
     const link = document.createElement('a');
-    link.href = '/src/assets/cv/resume.pdf';  // Update with the actual path to your CV
+    link.href = '/assets/VishalCV.pdf';  // CV file in public folder
     link.download = 'Vishal_Kumar_CV.pdf';
     document.body.appendChild(link);
     link.click();
@@ -216,8 +216,8 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
           {/* Logo and Nav items */}
           <div>
             <div className="text-center mb-12 mt-6">
-              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-pulse">Vishal</h2>
-              <p className="text-base font-semibold tracking-wider transition-all duration-500 hover:tracking-widest"
+              <h2 className="text-h3 gradient-heading animate-pulse">Vishal</h2>
+              <p className="text-body-sm font-semibold tracking-wider transition-all duration-500 hover:tracking-widest"
                  style={{ color: 'var(--accent)' }}
               >Full Stack Developer</p>
             </div>

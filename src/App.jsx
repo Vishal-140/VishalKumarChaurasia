@@ -7,13 +7,15 @@ import Projects from "./Components/Projects";
 import Skills from "./Components/Skills";
 import Footer from "./Components/Footer";
 import Contact from "./Components/Contact";
+import SEO from "./Components/SEO";
 import { ThemeProvider } from "./context/ThemeContext";
+import { setupSmoothScrolling, setupLazyLoading, preloadResources } from "./utils/performanceUtils";
 
 function App() {
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Mobile detection
+  // Mobile detection and performance optimizations
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
@@ -26,6 +28,16 @@ function App() {
         setIsNavVisible(true);
       }
     };
+    
+    // Initialize all performance optimizations
+    setupSmoothScrolling();
+    setupLazyLoading();
+    
+    // Preload essential resources
+    preloadResources([
+      { url: '/src/assets/images/profile.jpg', type: 'image' },
+      { url: '/src/assets/VishalCV.pdf', type: 'document' }
+    ]);
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -41,6 +53,7 @@ function App() {
 
   return (
     <ThemeProvider>
+      <SEO />
       <div className="min-h-screen transition-all duration-300" style={{
         backgroundColor: 'var(--bg-primary)',
         color: 'var(--text-primary)'

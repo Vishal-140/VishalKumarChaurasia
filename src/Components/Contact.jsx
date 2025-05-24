@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
 import { Mail, Send, User, MessageSquare } from 'lucide-react';
+import { motionVariants } from '../utils/animationUtils';
 gsap.registerPlugin(ScrollTrigger);
 
 function Contact() {
@@ -42,20 +43,20 @@ function Contact() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-800'}`}>
-            Contact <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-purple-500">Me</span>
+          <h2 className="text-h1 mb-4">
+            Contact <span className="gradient-heading">Me</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-violet-500 to-purple-500 mx-auto rounded-full mb-6"></div>
-          <p className={`max-w-2xl mx-auto text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+          <div className="divider mb-6"></div>
+          <p className={`section-subtitle text-body-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
             Have a project in mind or just want to say hello? Feel free to reach out!
           </p>
         </motion.div>
 
         {/* Contact Form */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          variants={motionVariants.fadeInUp}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
           className={`${isDark ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden`}
         >

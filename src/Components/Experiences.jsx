@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { useTheme } from '../context/ThemeContext';
+import { createBackgroundParticles } from '../utils/animationUtils';
 
 function Experiences() {
   const { isDark } = useTheme();
@@ -184,7 +185,7 @@ function Experiences() {
         <div className="max-w-3xl mx-auto">
           {/* Animated Title */}
           <h2 
-            className="main-title text-6xl font-bold mb-10 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
+            className="main-title text-h1 gradient-heading mb-10 text-center"
             style={{
               transform: 'translateY(50px)',
               opacity: '0',
@@ -193,6 +194,7 @@ function Experiences() {
           >
             Experience
           </h2>
+          <div className="divider mb-10"></div>
           
           {/* Experience Timeline */}
           <div className="relative">

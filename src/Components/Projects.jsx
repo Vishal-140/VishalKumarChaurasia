@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ExternalLink, Github, Calendar, Code, Database, Shield, Cpu, Smartphone, Globe } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { createBackgroundParticles, playSound } from '../utils/animationUtils';
+import { getProjectImageAlt, handleImageError } from '../utils/accessibilityUtils';
 
 const Projects = () => {
   const { isDark } = useTheme();
@@ -156,10 +158,7 @@ const Projects = () => {
   ];
 
   const playBubbleSound = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(e => console.log('Audio play failed:', e));
-    }
+    playSound(audioRef.current, { volume: 0.5 });
   };
 
   const getTechIcon = (tech) => {
@@ -178,95 +177,17 @@ const Projects = () => {
   };
 
   useEffect(() => {
-    // Create floating animation particles
-    const createParticle = () => {
-      const particle = document.createElement('div');
-      particle.className = 'floating-particle';
-      particle.style.cssText = `
-        position: fixed;
-        width: ${Math.random() * 4 + 2}px;
-        height: ${Math.random() * 4 + 2}px;
-        background: rgba(139, 92, 246, ${Math.random() * 0.5 + 0.1});
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 1;
-        left: ${Math.random() * 100}vw;
-        top: 100vh;
-        animation: float-up ${Math.random() * 10 + 15}s linear infinite;
-      `;
-      document.body.appendChild(particle);
-      
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.parentNode.removeChild(particle);
-        }
-      }, 20000);
-    };
-
-    const particleInterval = setInterval(createParticle, 300);
-
-    // Add CSS animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes float-up {
-        0% {
-          transform: translateY(0) rotate(0deg);
-          opacity: 0;
-        }
-        10% {
-          opacity: 1;
-        }
-        90% {
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(-100vh) rotate(360deg);
-          opacity: 0;
-        }
-      }
-      
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      
-      @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-      }
-      
-      @keyframes wave {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-      }
-      
-      .wave-bg {
-        background: linear-gradient(-45deg, #0f0f23, #1a1a2e, #16213e, #0f0f23);
-        background-size: 400% 400%;
-        animation: gradient-shift 15s ease infinite;
-      }
-      
-      @keyframes gradient-shift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      clearInterval(particleInterval);
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
-      }
-    };
-  }, []);
+    // Use the centralized background particles utility
+    const { cleanup } = createBackgroundParticles({
+      count: 50,
+      color: isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.4)',
+      size: { min: 2, max: 4 },
+      duration: { min: 15, max: 25 }
+    });
+    
+    // Return cleanup function
+    return cleanup;
+  }, [isDark]);
 
   return (
     <div className="min-h-screen relative overflow-hidden"
@@ -276,7 +197,7 @@ const Projects = () => {
          }}>
       {/* Audio element for bubble sound */}
       <audio ref={audioRef} preload="auto">
-        <source src="/src/assets/audio/bubblepopup.mp3" type="audio/mpeg" />
+        <source src="/assets/audio/bubblepopup.mp3" type="audio/mpeg" />
       </audio>
 
       {/* Animated grid background */}
@@ -293,12 +214,12 @@ const Projects = () => {
 
       <div ref={containerRef} className="container mx-auto px-6 py-20 relative z-10">
         {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
+        <div className="section-title-container">
+          <h2 className="text-h1 gradient-heading mb-4">
             Featured Projects
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-violet-500 to-purple-500 mx-auto rounded-full" />
-          <p className={`mt-6 text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div className="divider" />
+          <p className={`mt-6 text-body-lg section-subtitle ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Showcasing innovative solutions built with modern technologies and best practices
           </p>
         </div>
@@ -329,8 +250,10 @@ const Projects = () => {
                   {project.image ? (
                     <img 
                       src={project.image} 
-                      alt={project.title} 
+                      alt={getProjectImageAlt(project)}
                       className="w-full h-full object-cover"
+                      onError={(e) => handleImageError(e)}
+                      loading="lazy"
                     />
                   ) : (
                     <Code className="w-16 h-16 text-violet-300 opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
@@ -382,8 +305,9 @@ const Projects = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded text-sm font-medium transition-all duration-300 ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    aria-label={`View source code for ${project.title} on GitHub`}
                   >
-                    <Github className="w-4 h-4" />
+                    <Github className="w-4 h-4" aria-hidden="true" />
                     Code
                   </a>
                   <a
@@ -391,8 +315,9 @@ const Projects = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-violet-600 rounded text-white text-sm font-medium hover:bg-violet-700 transition-all duration-300"
+                    aria-label={`View live demo for ${project.title}`}
                   >
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLink className="w-4 h-4" aria-hidden="true" />
                     Demo
                   </a>
                 </div>
