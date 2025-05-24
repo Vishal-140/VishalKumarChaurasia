@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Sun, Moon, Menu, X, FileDown, Home, User, Briefcase, FolderGit2, Award, Mail } from 'lucide-react';
+import { Play, Pause, Sun, Moon, Menu, X, FileDown, Home, User, Briefcase, FolderGit2, Award, Mail, GraduationCap, Code } from 'lucide-react';
 import * as THREE from 'three';
 import { useTheme } from '../context/ThemeContext';
 import { scrollToSection, getActiveSection } from '../utils/scrollUtils';
@@ -10,12 +10,13 @@ const navItems = [
   { name: 'Experiences', id: 'experiences' },
   { name: 'Projects', id: 'projects' },
   { name: 'Skills', id: 'skills' },
+  { name: 'Certifications', id: 'certifications' },
+  { name: 'Coding Profiles', id: 'coding-profiles' },
   { name: 'Contact', id: 'contact' }
 ];
 
-function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
+function Navbar({ isNavVisible, setIsNavVisible, isMobile, isPlaying, setIsPlaying, toggleMusic }) {
   const { isDark, toggleTheme } = useTheme();
-  const [isPlaying, setIsPlaying] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [scrollY, setScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState('home');
@@ -94,13 +95,23 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
       setScrollY(window.scrollY);
       const currentSection = getActiveSection();
       if (currentSection) {
+        // Force update if we have a new section (including Certifications and Coding Profiles)
         setActiveSection(currentSection);
       }
     };
     
+    // Call handleScroll initially to set the active section on mount
+    handleScroll();
+    
+    // Also update active section whenever navItems change
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  // Debug active section changes
+  useEffect(() => {
+    console.log('Active section changed to:', activeSection);
+  }, [activeSection]);
 
   // Audio setup
   useEffect(() => {
@@ -125,19 +136,7 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
 
   // Bubble sound functionality removed as requested
 
-  const toggleMusic = async () => {
-    try {
-      if (isPlaying) {
-        await audioRef.current?.pause();
-        setIsPlaying(false);
-      } else {
-        await audioRef.current?.play();
-        setIsPlaying(true);
-      }
-    } catch (error) {
-      console.log('Music toggle failed:', error);
-    }
-  };
+  // Music toggle functionality has been moved to App.jsx
 
   const toggleNavbar = () => {
     setIsNavVisible(!isNavVisible);
@@ -212,18 +211,18 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
         />
         
         {/* Navbar Content Container */}
-        <div className="relative z-10 flex flex-col justify-between h-full p-6 overflow-y-auto">
+        <div className="relative z-10 flex flex-col justify-between h-full p-4 overflow-hidden">
           {/* Logo and Nav items */}
           <div>
-            <div className="text-center mb-12 mt-6">
-              <h2 className="text-h3 gradient-heading animate-pulse">Vishal</h2>
-              <p className="text-body-sm font-semibold tracking-wider transition-all duration-500 hover:tracking-widest"
+            <div className="text-center mb-8 mt-4">
+              <h2 className="text-h4 gradient-heading animate-pulse">Vishal</h2>
+              <p className="text-body-xs font-semibold tracking-wider transition-all duration-500 hover:tracking-widest"
                  style={{ color: 'var(--accent)' }}
               >Full Stack Developer</p>
             </div>
             
             {/* Navigation Links */}
-            <nav className="space-y-2">
+            <nav className="space-y-1">
               {navItems.map((item, index) => (
                 <div
                   key={item.id}
@@ -232,7 +231,10 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
                   onMouseLeave={() => setHoveredItem(null)}
                 >
                   {/* Single unified background glow for active/hovered items */}
-                  {(activeSection === item.id || hoveredItem === index) && (
+                  {((activeSection === item.id || 
+                     (item.id === 'coding-profiles' && activeSection === 'coding-profiles') ||
+                     (item.id === 'certifications' && activeSection === 'certifications')) || 
+                     hoveredItem === index) && (
                     <div
                       className={`absolute inset-0 rounded-2xl -z-10 ${activeSection === item.id ? 'active-glow' : ''}`}
                       style={{
@@ -256,7 +258,7 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
                   {/* Navigation Item */}
                   <button
                     onClick={() => handleNavClick(item.id)}
-                    className={`relative w-full text-left ${isMobile ? 'px-6 py-4' : 'px-8 py-5'} rounded-2xl transition-all duration-300 cursor-pointer font-medium ${isMobile ? 'text-base' : 'text-lg'}`}
+                    className={`relative w-full text-left ${isMobile ? 'px-4 py-2' : 'px-6 py-3'} rounded-xl transition-all duration-300 cursor-pointer font-medium ${isMobile ? 'text-sm' : 'text-base'}`}
                     style={{
                       transform: (hoveredItem === index || activeSection === item.id)
                         ? 'translateX(8px)' 
@@ -306,20 +308,6 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
                           }}
                         />
                       }
-                      {item.id === 'experiences' && 
-                        <Briefcase 
-                          size={16} 
-                          className="transition-all duration-300"
-                          style={{
-                            color: activeSection === item.id
-                              ? isDark ? '#60a5fa' : '#2563eb'
-                              : (hoveredItem === index)
-                                ? isDark ? '#ffffff' : '#000000'
-                                : isDark ? '#6b7280' : '#94a3b8',
-                            transform: activeSection === item.id ? 'scale(125%)' : 'scale(100%)'
-                          }}
-                        />
-                      }
                       {item.id === 'projects' && 
                         <FolderGit2 
                           size={16} 
@@ -336,6 +324,48 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile }) {
                       }
                       {item.id === 'skills' && 
                         <Award 
+                          size={16} 
+                          className="transition-all duration-300"
+                          style={{
+                            color: activeSection === item.id
+                              ? isDark ? '#60a5fa' : '#2563eb'
+                              : (hoveredItem === index)
+                                ? isDark ? '#ffffff' : '#000000'
+                                : isDark ? '#6b7280' : '#94a3b8',
+                            transform: activeSection === item.id ? 'scale(125%)' : 'scale(100%)'
+                          }}
+                        />
+                      }
+                      {item.id === 'experiences' && 
+                        <Briefcase 
+                          size={16} 
+                          className="transition-all duration-300"
+                          style={{
+                            color: activeSection === item.id
+                              ? isDark ? '#60a5fa' : '#2563eb'
+                              : (hoveredItem === index)
+                                ? isDark ? '#ffffff' : '#000000'
+                                : isDark ? '#6b7280' : '#94a3b8',
+                            transform: activeSection === item.id ? 'scale(125%)' : 'scale(100%)'
+                          }}
+                        />
+                      }
+                      {item.id === 'certifications' && 
+                        <GraduationCap 
+                          size={16} 
+                          className="transition-all duration-300"
+                          style={{
+                            color: activeSection === item.id
+                              ? isDark ? '#60a5fa' : '#2563eb'
+                              : (hoveredItem === index)
+                                ? isDark ? '#ffffff' : '#000000'
+                                : isDark ? '#6b7280' : '#94a3b8',
+                            transform: activeSection === item.id ? 'scale(125%)' : 'scale(100%)'
+                          }}
+                        />
+                      }
+                      {item.id === 'coding-profiles' && 
+                        <Code 
                           size={16} 
                           className="transition-all duration-300"
                           style={{

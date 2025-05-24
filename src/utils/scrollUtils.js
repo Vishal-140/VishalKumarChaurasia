@@ -48,6 +48,8 @@ export const getActiveSection = () => {
     'experiences',
     'projects',
     'skills',
+    'certifications',
+    'coding-profiles',
     'contact'
   ];
   
@@ -65,15 +67,29 @@ export const getActiveSection = () => {
     const rect = section.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
+    // Adjust this threshold to determine when a section is considered "in view"
+    const viewThreshold = windowHeight * 0.3; // 30% of viewport height
+    
+    // Consider a section in view if its top is in the top 70% of the viewport
+    // or if it's filling most of the viewport
+    const isInView = 
+      (rect.top >= 0 && rect.top < viewThreshold) || 
+      (rect.top < 0 && rect.bottom > windowHeight * 0.5);
+    
     // Calculate how much of the section is visible
     const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
     const sectionHeight = rect.height;
     
     // Calculate percentage of section visible (0 to 1)
-    const visiblePercentage = visibleHeight > 0 ? visibleHeight / sectionHeight : 0;
+    let visiblePercentage = visibleHeight > 0 ? visibleHeight / sectionHeight : 0;
+    
+    // Give bonus to sections near the top of the viewport
+    if (rect.top >= 0 && rect.top < viewThreshold) {
+      visiblePercentage += 0.3; // Bonus for sections near the top
+    }
     
     // Update max if this section has more visible area
-    if (visiblePercentage > maxVisiblePercentage) {
+    if (isInView && visiblePercentage > maxVisiblePercentage) {
       maxVisiblePercentage = visiblePercentage;
       maxVisibleSection = section.id;
     }

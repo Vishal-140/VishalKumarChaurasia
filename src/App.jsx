@@ -1,20 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "./Components/Navbar";
 import Home from "./Components/Home";
 import About from "./Components/About";
 import Experiences from "./Components/Experiences";
 import Projects from "./Components/Projects";
 import Skills from "./Components/Skills";
+import Certifications from "./Components/Certifications";
+import CodingProfiles from "./Components/CodingProfiles";
 import Footer from "./Components/Footer";
 import Contact from "./Components/Contact";
 import SEO from "./Components/SEO";
+import MusicPopup from "./Components/MusicPopup";
 import { ThemeProvider } from "./context/ThemeContext";
 import { setupSmoothScrolling, setupLazyLoading, preloadResources } from "./utils/performanceUtils";
 
 function App() {
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showMusicPopup, setShowMusicPopup] = useState(false);
+  
+  const audioRef = useRef(null);
 
+  // Music control functionality
+  const toggleMusic = async () => {
+    try {
+      if (isPlaying) {
+        await audioRef.current?.pause();
+        setIsPlaying(false);
+      } else {
+        await audioRef.current?.play();
+        setIsPlaying(true);
+      }
+    } catch (error) {
+      console.log('Music toggle failed:', error);
+    }
+  };
+  
+  // Initialize audio
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      audioRef.current = new Audio('/assets/audio/backgroundmusic.mp3');
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
+    }
+    
+    // Show music popup after a short delay when site loads
+    const popupTimer = setTimeout(() => {
+      setShowMusicPopup(true);
+    }, 1500);
+    
+    return () => {
+      clearTimeout(popupTimer);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+  
   // Mobile detection and performance optimizations
   useEffect(() => {
     const checkMobile = () => {
@@ -63,6 +107,17 @@ function App() {
         isNavVisible={isNavVisible} 
         setIsNavVisible={setIsNavVisible}
         isMobile={isMobile}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        toggleMusic={toggleMusic}
+      />
+      
+      {/* Music Popup Component */}
+      <MusicPopup 
+        isPlaying={isPlaying}
+        toggleMusic={toggleMusic}
+        isVisible={showMusicPopup}
+        setIsVisible={setShowMusicPopup}
       />
       
       {/* Main content area with smooth transition */}
@@ -93,6 +148,8 @@ function App() {
     <div id="experiences"><Experiences /></div>
     <div id="projects"><Projects /></div>
     <div id="skills"><Skills /></div>
+    <div id="certifications"><Certifications /></div>
+    <div id="coding-profiles"><CodingProfiles /></div>
     <div id="contact"><Contact /></div>
     <div id="footer"><Footer /></div>
   </div>

@@ -19,6 +19,8 @@ function Footer() {
     { id: 'experiences', label: 'Experiences' },
     { id: 'projects', label: 'Projects' },
     { id: 'skills', label: 'Skills' },
+    { id: 'certifications', label: 'Certifications' },
+    { id: 'coding-profiles', label: 'Coding Profiles' },
     { id: 'contact', label: 'Contact' }
   ];
 
@@ -43,7 +45,7 @@ function Footer() {
               <div className="w-10 h-10 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xl mr-3">
                 V
               </div>
-              <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>Vishal Kumar</h3>
+              <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>Vishal Kumar Chaurasia</h3>
             </div>
             <p className="mb-6 text-sm">
               A passionate web developer crafting beautiful and functional digital experiences.
@@ -66,23 +68,42 @@ function Footer() {
             </div>
           </div>
 
-          {/* Quick Links Column */}
+          {/* Quick Links Column - Two Columns */}
           <div>
             <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-800'}`}>Quick Links</h3>
-            <ul className="space-y-2">
-              {navigationItems.map((item) => (
-                <li key={item.id}>
-                  <motion.button
-                    onClick={() => handleNavClick(item.id)}
-                    className={`flex items-center text-sm hover:translate-x-1 transition-transform ${isDark ? 'hover:text-violet-400' : 'hover:text-violet-600'}`}
-                    whileHover={{ x: 4 }}
-                  >
-                    <span className="w-1 h-1 rounded-full bg-violet-500 mr-2"></span>
-                    {item.label}
-                  </motion.button>
-                </li>
-              ))}
-            </ul>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+              {/* Left Column */}
+              <ul>
+                {navigationItems.slice(0, Math.ceil(navigationItems.length / 2)).map((item) => (
+                  <li key={item.id}>
+                    <motion.button
+                      onClick={() => handleNavClick(item.id)}
+                      className={`flex items-center text-sm hover:translate-x-1 transition-transform ${isDark ? 'hover:text-violet-400' : 'hover:text-violet-600'}`}
+                      whileHover={{ x: 4 }}
+                    >
+                      <span className="w-1 h-1 rounded-full bg-violet-500 mr-2"></span>
+                      {item.label}
+                    </motion.button>
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Right Column */}
+              <ul>
+                {navigationItems.slice(Math.ceil(navigationItems.length / 2)).map((item) => (
+                  <li key={item.id}>
+                    <motion.button
+                      onClick={() => handleNavClick(item.id)}
+                      className={`flex items-center text-sm hover:translate-x-1 transition-transform ${isDark ? 'hover:text-violet-400' : 'hover:text-violet-600'}`}
+                      whileHover={{ x: 4 }}
+                    >
+                      <span className="w-1 h-1 rounded-full bg-violet-500 mr-2"></span>
+                      {item.label}
+                    </motion.button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Newsletter Column */}
@@ -93,7 +114,10 @@ function Footer() {
             </p>
             <motion.a
               href="#contact"
-              onClick={() => handleNavClick('contact')}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('contact');
+              }}
               className={`inline-flex items-center px-4 py-2 rounded-lg ${isDark ? 'bg-violet-600 hover:bg-violet-700' : 'bg-violet-600 hover:bg-violet-700'} text-white text-sm font-medium transition-colors duration-300`}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
