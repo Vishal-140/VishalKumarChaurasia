@@ -33,34 +33,36 @@ const useIntersectionObserver = (options = {}) => {
   return [setRef, inView];
 };
 
-// Mock certificate data - replace with your actual data
+// Certificate data
 const certificatesData = [
   {
     id: 'cloud-cert',
-    title: 'Cloud Certificate',
+    title: 'Cloud Computing',
     issuer: 'NPTEL',
     category: 'Cloud Computing',
     date: '2024',
-    image: '/assets/images/cloud-certificate.jpg', // Add your certificate image in public folder
-    link: 'https://example.com/cloud-certificate'
+    image: '/assets/images/certificates/cloud.png',
+    link: '/assets/images/certificates/CloudComputing.pdf',
+    isPdf: true
   },
   {
     id: 'kotlin-cert',
-    title: 'Kotlin Certificate',
+    title: 'Android Development',
     issuer: 'Coursera',
     category: 'Android App Development with Kotlin',
     date: '2024',
-    image: '/assets/images/kotlin-certificate.jpg', // Add your certificate image in public folder
-    link: 'https://example.com/kotlin-certificate'
+    image: '/assets/images/certificates/android.png',
+    link: 'https://www.coursera.org/account/accomplishments/verify/43J5ANSE5EMT'
   },
   {
     id: 'ai-cert',
-    title: 'AI Apps Certificate',
+    title: 'Prompt Engineering',
     issuer: 'Coursera',
-    category: 'Build AI Apps with ChatGPT, Dall-E, and GPT-4',
+    category: 'ChatGPT Prompt Engineering for Developers',
     date: '2024',
-    image: '/assets/images/ai-certificate.jpg', // Add your certificate image in public folder
-    link: 'https://example.com/ai-certificate'
+    image: '/assets/images/certificates/prompt.png',
+    link: 'https://www.coursera.org/account/accomplishments/verify/83V3FM5HCUFX'
+    
   }
 ];
 
@@ -295,17 +297,15 @@ const Certifications = () => {
                 <img
                   src={certificate.image}
                   alt={`${certificate.title} from ${certificate.issuer}`}
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                  className="w-full h-full transition-transform duration-700 hover:scale-110"
+                  style={{ objectFit: 'contain', transform: 'scale(0.9)' }}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.style.opacity = '0.1';
                   }}
                   loading="lazy"
                 />
-                {/* Issuer logo/badge overlay */}
-                <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm p-1 rounded-full">
-                  <span className="inline-block h-6 w-6 rounded-full bg-gradient-to-br from-violet-500 to-purple-600" />
-                </div>
+                {/* No overlay badges for cleaner certificate display */}
               </div>
               
               {/* Certificate details */}
@@ -335,10 +335,10 @@ const Certifications = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 text-body-sm px-3 py-1.5 rounded-full bg-violet-600 text-white hover:bg-violet-700 transition-colors"
                     onClick={(e) => e.stopPropagation()}
-                    aria-label={`View ${certificate.title} certificate`}
+                    aria-label={`View ${certificate.title} ${certificate.isPdf ? 'PDF' : 'certificate'}`}
                   >
                     <ExternalLink size={14} />
-                    <span>View Certificate</span>
+                    <span>{certificate.isPdf ? 'View PDF' : 'View Certificate'}</span>
                   </a>
                 </div>
               </div>
@@ -382,6 +382,7 @@ const Certifications = () => {
                 src={selectedCertificate.image}
                 alt={`${selectedCertificate.title} certificate from ${selectedCertificate.issuer}`}
                 className="w-full h-full object-contain"
+                style={{ maxWidth: '90%', margin: '0 auto' }}
               />
             </div>
             
@@ -397,16 +398,29 @@ const Certifications = () => {
                 <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   Issued by <span className="font-medium">{selectedCertificate.issuer}</span> · {selectedCertificate.date}
                 </p>
-                <a
-                  href={selectedCertificate.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
-                  aria-label={`View ${selectedCertificate.title} certificate`}
-                >
-                  <ExternalLink size={16} />
-                  <span>View Certificate</span>
-                </a>
+                {selectedCertificate.isPdf ? (
+                  <a
+                    href={selectedCertificate.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
+                    aria-label={`View ${selectedCertificate.title} PDF`}
+                  >
+                    <ExternalLink size={16} />
+                    <span>View PDF</span>
+                  </a>
+                ) : (
+                  <a
+                    href={selectedCertificate.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
+                    aria-label={`View ${selectedCertificate.title} certificate`}
+                  >
+                    <ExternalLink size={16} />
+                    <span>View Certificate</span>
+                  </a>
+                )}
               </div>
             </div>
           </motion.div>

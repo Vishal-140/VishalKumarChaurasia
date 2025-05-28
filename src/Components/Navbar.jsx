@@ -155,7 +155,7 @@ function Navbar({ isNavVisible, setIsNavVisible, isMobile, isPlaying, setIsPlayi
   const handleDownloadCV = () => {
     // Create a link to download the CV file
     const link = document.createElement('a');
-    link.href = '/assets/VishalCV.pdf';  // CV file in public folder
+    link.href = '/assets/images/img/VishalCV.pdf';  // CV file in public folder
     link.download = 'Vishal_Kumar_CV.pdf';
     document.body.appendChild(link);
     link.click();

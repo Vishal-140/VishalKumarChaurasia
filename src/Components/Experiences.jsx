@@ -152,8 +152,8 @@ function Experiences() {
       description: "Developed responsive UI components, enhanced user experience across multiple projects, and built reusable React components for improved development efficiency. Collaborated with senior developers to implement modern web technologies.",
       skills: ["React", "JavaScript", "CSS3", "Responsive Design", "Git", "Agile"],
       certified: true,
-      certificateFile: "/assets/certificate.pdf", // or "/assets/certificate.jpg" for image
-      certificateType: "pdf" // or "image"
+      certificateFile: "/assets/images/certificates/intern_gokboru.png",
+      certificateType: "image"
     },
     {
       title: "Web Developer",
@@ -192,7 +192,7 @@ function Experiences() {
               transition: 'all 1s cubic-bezier(0.22, 1, 0.36, 1)'
             }}
           >
-            Experience
+            Experiences
           </h2>
           <div className="divider mb-10"></div>
           
@@ -345,12 +345,26 @@ function Experiences() {
                 </div>
               ) : (
                 // Image Display
-                <div className="flex items-center justify-center">
-                  <img
-                    src={selectedCertificate.certificateFile}
-                    alt={`${selectedCertificate.title} Certificate`}
-                    className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-                  />
+                <div className="flex flex-col items-center justify-center">
+                  <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                    {selectedCertificate.company} - {selectedCertificate.title} Certificate
+                  </h3>
+                  <div className="w-full overflow-hidden rounded-lg shadow-xl border-2 border-blue-500">
+                    <img
+                      src={selectedCertificate.certificateFile}
+                      alt={`${selectedCertificate.title} Certificate`}
+                      className="w-full object-contain bg-white"
+                      style={{ maxHeight: '70vh' }}
+                      onError={(e) => {
+                        console.error('Image failed to load:', selectedCertificate.certificateFile);
+                        e.target.onerror = null;
+                        e.target.src = '/assets/images/img/image-placeholder.png';
+                      }}
+                    />
+                  </div>
+                  <p className="mt-4 text-sm text-center italic">
+                    {selectedCertificate.period}
+                  </p>
                 </div>
               )}
             </div>

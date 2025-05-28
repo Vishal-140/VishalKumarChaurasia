@@ -178,9 +178,9 @@ function Home() {
   }, []);
 
   const handleDownloadCV = () => {
-    // You'll need to update this path to your actual CV location
+    // Updated path to the CV in the public folder
     const link = document.createElement('a');
-    link.href = '../src/assets/VishalCV.pdf';
+    link.href = '/assets/images/img/VishalCV.pdf';
     link.download = 'Vishal_Kumar_Chaurasia_CV.pdf';
     document.body.appendChild(link);
     link.click();
@@ -306,7 +306,7 @@ function Home() {
                           : 'linear-gradient(to bottom right, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1))'
                       }}
                     >
-                      <img src="../src/assets/images/profile.jpg" alt="Vishal Profile" />
+                      <img src="/assets/images/img/profile.jpg" alt="Vishal Profile" className="w-full h-full object-cover" />
                     </div>
                   </div>
                 </div>

@@ -37,80 +37,34 @@ const codingProfilesData = [
   {
     id: 'leetcode',
     name: 'LeetCode',
-    username: 'vishal_kumar',
-    link: 'https://leetcode.com/vishal_kumar/',
-    logo: '/assets/images/coding-profiles/leetcode.svg',
-    color: '#FFA116',
-    stats: {
-      problems: '450+',
-      contests: '20+',
-      ranking: 'Top 5%'
-    }
+    username: 'Vishal140',
+    link: 'https://leetcode.com/u/Vishal140/',
+    logo: '/assets/images/coding-profiles/leetcode.png',
+    color: '#FFA116'
   },
   {
     id: 'gfg',
     name: 'GeeksForGeeks',
-    username: 'vishal_kumar123',
-    link: 'https://auth.geeksforgeeks.org/user/vishal_kumar123',
-    logo: '/assets/images/coding-profiles/gfg.svg',
-    color: '#2F8D46',
-    stats: {
-      problems: '300+',
-      articles: '5+',
-      score: '1200+'
-    }
+    username: 'vishalkumarchaurasia',
+    link: 'https://www.geeksforgeeks.org/user/vishalkumarchaurasia/',
+    logo: '/assets/images/coding-profiles/gfg.png',
+    color: '#2F8D46'
   },
   {
-    id: 'codestudio',
-    name: 'CodeStudio',
-    username: 'vishal.kumar',
-    link: 'https://www.codingninjas.com/studio/profile/vishal.kumar',
-    logo: '/assets/images/coding-profiles/codestudio.png',
-    color: '#F78D1E',
-    stats: {
-      problems: '200+',
-      streak: '45 days',
-      points: '1500+'
-    }
+    id: 'code360',
+    name: 'Naukri Code360',
+    username: 'Vishal_140',
+    link: 'https://www.naukri.com/code360/profile/Vishal_140',
+    logo: '/assets/images/coding-profiles/code360.png',
+    color: '#FF8C00'
   },
   {
-    id: 'codechef',
-    name: 'CodeChef',
-    username: 'vishal_kumar21',
-    link: 'https://www.codechef.com/users/vishal_kumar21',
-    logo: '/assets/images/coding-profiles/codechef.svg',
-    color: '#5B4638',
-    stats: {
-      rating: '1800+',
-      contests: '15+',
-      division: 'Div 2'
-    }
-  },
-  {
-    id: 'hackerrank',
-    name: 'HackerRank',
-    username: 'vishal_kumar',
-    link: 'https://www.hackerrank.com/vishal_kumar',
-    logo: '/assets/images/coding-profiles/hackerrank.svg',
-    color: '#00EA64',
-    stats: {
-      stars: '5★',
-      badges: '12+',
-      certifications: '3'
-    }
-  },
-  {
-    id: 'codeforces',
-    name: 'Codeforces',
-    username: 'vishal_kumar',
-    link: 'https://codeforces.com/profile/vishal_kumar',
-    logo: '/assets/images/coding-profiles/codeforces.svg',
-    color: '#1F8ACB',
-    stats: {
-      rating: '1400+',
-      contests: '25+',
-      problems: '300+'
-    }
+    id: 'codolio',
+    name: 'Codolio',
+    username: 'vishal140',
+    link: 'https://codolio.com/profile/vishal140',
+    logo: '/assets/images/coding-profiles/codolio.jpg',
+    color: '#c87137'
   }
 ];
 
@@ -405,31 +359,31 @@ const CodingProfiles = () => {
               </div>
               
               {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center mb-4">
+              <div className="p-6 flex flex-col h-full">
+                <div className="flex items-center">
                   {/* Platform logo */}
                   <div 
-                    className="w-12 h-12 flex items-center justify-center rounded-lg mr-4 overflow-hidden"
+                    className="w-14 h-14 flex items-center justify-center rounded-lg mr-4 overflow-hidden"
                     style={{ 
-                      backgroundColor: `${profile.color}20`,
-                      border: `1px solid ${profile.color}40`
+                      backgroundColor: `${profile.color}15`,
+                      border: `1px solid ${profile.color}30`
                     }}
                   >
                     <motion.img
                       src={profile.logo}
                       alt={`${profile.name} logo`}
-                      className="w-8 h-8 object-contain"
+                      className="w-9 h-9 object-contain"
                       whileHover={{ rotate: 5, scale: 1.1 }}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = '/assets/images/coding-profiles/default.svg';
+                        e.target.src = '/assets/images/coding-profiles/code360.png';
                       }}
                     />
                   </div>
                   
                   {/* Platform info */}
                   <div>
-                    <h3 className={`text-h4 font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                    <h3 className={`text-xl font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-800'}`}>
                       {profile.name}
                     </h3>
                     <p className={`text-sm flex items-center ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
@@ -439,52 +393,23 @@ const CodingProfiles = () => {
                   </div>
                 </div>
                 
-                {/* Stats grid */}
-                <motion.div 
-                  variants={statsVariants}
-                  className="grid grid-cols-3 gap-2 mt-5"
-                >
-                  {Object.entries(profile.stats).map(([key, value], i) => (
-                    <div 
-                      key={`${profile.id}-${key}`}
-                      className={`flex flex-col items-center justify-center p-2 rounded-lg ${
-                        isDark ? 'bg-gray-700/50' : 'bg-gray-100/80'
-                      }`}
-                    >
-                      <span className={`text-xs uppercase ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                        {key}
-                      </span>
-                      <span className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>
-                        {value}
-                      </span>
-                      <span className="mt-1">
-                        {key === 'problems' && <Code size={12} />}
-                        {key === 'contests' && <Award size={12} />}
-                        {key === 'ranking' && <TrendingUp size={12} />}
-                        {key === 'stars' && <Star size={12} />}
-                        {key === 'rating' && <BarChart2 size={12} />}
-                        {key === 'score' && <TrendingUp size={12} />}
-                        {key === 'badges' && <Award size={12} />}
-                        {key === 'streak' && <TrendingUp size={12} />}
-                        {key === 'articles' && <Users size={12} />}
-                        {key === 'division' && <BarChart2 size={12} />}
-                        {key === 'points' && <TrendingUp size={12} />}
-                        {key === 'certifications' && <Award size={12} />}
-                      </span>
-                    </div>
-                  ))}
-                </motion.div>
+                {/* Spacer to push Visit Profile link to bottom */}
+                <div className="flex-grow mt-4"></div>
                 
                 {/* Visit link */}
                 <motion.div 
-                  className="flex justify-end mt-4"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 }}
+                  className="flex justify-end mt-4 pt-2 border-t"
+                  style={{ borderColor: isDark ? 'rgba(75, 85, 99, 0.3)' : 'rgba(229, 231, 235, 0.8)' }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
                 >
                   <div 
-                    className="flex items-center gap-1 text-body-sm"
-                    style={{ color: profile.color }}
+                    className="flex items-center gap-1.5 py-1 px-3 rounded-full text-sm font-medium transition-all"
+                    style={{ 
+                      backgroundColor: `${profile.color}15`,
+                      color: profile.color
+                    }}
                   >
                     <span>Visit Profile</span>
                     <ExternalLink size={14} />
