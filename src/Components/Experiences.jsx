@@ -146,22 +146,22 @@ function Experiences() {
 
   const experiences = [
     {
-      title: "Frontend Intern",
-      company: "Gokboru Tech",
-      period: "Sep 2024 - Nov 2024",
-      description: "Developed responsive UI components, enhanced user experience across multiple projects, and built reusable React components for improved development efficiency. Collaborated with senior developers to implement modern web technologies.",
-      skills: ["React", "JavaScript", "CSS3", "Responsive Design", "Git", "Agile"],
-      certified: true,
-      certificateFile: "/assets/images/certificates/intern_gokboru.png",
-      certificateType: "image"
-    },
-    {
       title: "Web Developer",
       company: "Freelance Projects",
       period: "2023 - Present",
       description: "Created custom websites for small businesses, implemented modern design patterns, and optimized performance for better user engagement.",
-      skills: ["HTML5", "CSS3", "JavaScript", "WordPress", "SEO", "UI/UX"]
-    }
+      skills: ["HTML5", "CSS3", "JavaScript", "React", "Tailwind CSS", "Responsive Design"]
+    },
+    {
+      title: "Frontend Intern",
+      company: "Gokboru Tech",
+      period: "Sep 2024 - Nov 2024",
+      description: "Developed responsive UI components, enhanced user experience across multiple projects, and built reusable React components for improved development efficiency. Collaborated with senior developers to implement modern web technologies.",
+      skills: ["React", "JavaScript", "CSS3", "Tailwind CSS" , "Responsive Design"],
+      certified: true,
+      certificateFile: "/assets/images/certificates/intern_gokboru.png",
+      certificateType: "image"
+    },
   ];
 
   return (
@@ -358,7 +358,7 @@ function Experiences() {
                       onError={(e) => {
                         console.error('Image failed to load:', selectedCertificate.certificateFile);
                         e.target.onerror = null;
-                        e.target.src = '/assets/images/img/image-placeholder.png';
+                        e.target.src = '/assets/images/certificates/intern_gokboru.png';
                       }}
                     />
                   </div>

@@ -25,10 +25,9 @@ function Footer() {
   ];
 
   const socialLinks = [
-    { icon: <Github className="w-5 h-5" />, url: 'https://github.com/', label: 'GitHub' },
-    { icon: <Linkedin className="w-5 h-5" />, url: 'https://linkedin.com/', label: 'LinkedIn' },
-    { icon: <Twitter className="w-5 h-5" />, url: 'https://twitter.com/', label: 'Twitter' },
-    { icon: <Mail className="w-5 h-5" />, url: 'mailto:contact@example.com', label: 'Email' }
+    { icon: <Github className="w-5 h-5" />, url: 'https://github.com/Vishal-140', label: 'GitHub' },
+    { icon: <Linkedin className="w-5 h-5" />, url: 'https://linkedin.com/in/vishalkrchaurasia', label: 'LinkedIn' },
+    { icon: <Mail className="w-5 h-5" />, url: 'mailto:vishalkrchaurasia140@gmail.com', label: 'Email' }
   ];
 
   return (
